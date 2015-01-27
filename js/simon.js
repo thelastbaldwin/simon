@@ -41,13 +41,13 @@ buttons.forEach(function(button){
 });
 
 window.addEventListener('computer turn finished', function(e){
-	console.log('computer turn finished');
+	// console.log('computer turn finished');
 	//start the human timer
 	resetHumanChoiceInterval();
 });
 
 window.addEventListener('human turn finished', function(e){
-	console.log('human turn finished');
+	// console.log('human turn finished');
 	colorIndex = 0;
 	clearInterval(humanChoiceInterval);
 	computerTurn();
@@ -65,18 +65,22 @@ window.addEventListener('human color choice', function(e){
 				window.dispatchEvent(new Event('human turn finished'));
 			}
 		}else{
-			clearInterval(humanChoiceInterval);
-			console.log('you lose! your score was: ' + score);
-			hasLost = true;
+			lose();
 		}
 	}
 });
 
+function lose(){
+	clearInterval(humanChoiceInterval);
+	console.log('you lose! your score was: ' + score);
+	hasLost = true;
+	failSound.play();
+}
+
 function resetHumanChoiceInterval(){
 	clearInterval(humanChoiceInterval);
 	humanChoiceInterval = setTimeout(function(){
-		console.log('you lose! your score was: ' + score);
-		hasLost = true;
+		lose();
 	}, 3000);
 };
 
@@ -124,4 +128,3 @@ function computerTurn(){
 		}
 	}, 700);
 }
-
