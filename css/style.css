@@ -18,9 +18,21 @@ body, html{
 }
 
 #controls{
+	font-size: 2.5vw;
+	text-align: center;
 	position: absolute;
 	top: 0;
 	left: 0;
+	background-color: rgba(255, 255, 255, 0.7);
+	padding: 1.2vh 1.2vw;
+}
+
+#controls p{
+	margin-top: 0;
+}
+
+#controls button{
+	font-size: 2.5vw;
 }
 
 #simon{

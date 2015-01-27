@@ -29,7 +29,9 @@ var humanChoiceInterval,
 		}
 	],
 	hasLost = false,
-	failSound = document.querySelector('#explodeSound');
+	failSound = document.querySelector('#explodeSound'),
+	scoreElement = document.querySelector('#controls p span'),
+	startButton = document.querySelector('#controls button');
 
 // attach handlers
 buttons.forEach(function(button){
@@ -40,15 +42,16 @@ buttons.forEach(function(button){
 	}.bind(button);
 });
 
+startButton.onclick = start;
+
 window.addEventListener('computer turn finished', function(e){
-	// console.log('computer turn finished');
-	//start the human timer
 	resetHumanChoiceInterval();
 });
 
 window.addEventListener('human turn finished', function(e){
-	// console.log('human turn finished');
 	colorIndex = 0;
+	score++;
+	updateScore();
 	clearInterval(humanChoiceInterval);
 	computerTurn();
 });
@@ -61,7 +64,6 @@ window.addEventListener('human color choice', function(e){
 			colorIndex++;
 
 			if(colorIndex === computerPattern.length){
-				score++;
 				window.dispatchEvent(new Event('human turn finished'));
 			}
 		}else{
@@ -70,6 +72,16 @@ window.addEventListener('human color choice', function(e){
 	}
 });
 
+function start(){
+	computerPattern = [];
+	clearInterval(humanChoiceInterval);
+	score = 0;
+	colorIndex = 0;
+	hasLost = false;
+	updateScore();
+	computerTurn();
+}
+
 function lose(){
 	clearInterval(humanChoiceInterval);
 	console.log('you lose! your score was: ' + score);
@@ -77,12 +89,16 @@ function lose(){
 	failSound.play();
 }
 
+function updateScore(){
+	scoreElement.innerHTML = score;
+}
+
 function resetHumanChoiceInterval(){
 	clearInterval(humanChoiceInterval);
 	humanChoiceInterval = setTimeout(function(){
 		lose();
 	}, 3000);
-};
+}
 
 function resetButtons(){
 	//removes the active class from all buttons
@@ -90,7 +106,7 @@ function resetButtons(){
 		if(buttons.hasOwnProperty(button)){
 			buttons[button].node.classList.remove('active');
 		}
-	});		
+	});
 }
 
 function setActiveButton(button){
