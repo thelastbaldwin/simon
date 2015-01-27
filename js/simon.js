@@ -1,48 +1,127 @@
-var playerPattern = [],
+var humanChoiceInterval,
 	computerPattern = [],
-	buttons = {
-		yellow: {
+	colorIndex = 0,
+	score = 0,
+	buttons = [
+		{
+			color: 'yellow',
+			value: 0,
 			node: document.querySelector('#simon .yellow'),
 			sound: document.querySelector('#yellowSound')
 		},
-		blue: {
+		{
+			color: 'blue',
+			value: 1,
 			node: document.querySelector('#simon .blue'),
 			sound: document.querySelector('#blueSound')
 		},
-		red: {
+		{
+			color: 'red',
+			value: 2,
 			node: document.querySelector('#simon .red'),
 			sound: document.querySelector('#redSound')
 		},
-		green: {
+		{
+			color: 'green',
+			value: 3,
 			node: document.querySelector('#simon .green'),
 			sound: document.querySelector('#greenSound')
 		}
-	};
+	],
+	hasLost = false,
+	failSound = document.querySelector('#explodeSound');
 
 // attach handlers
-for(var button in buttons){
-	if(buttons.hasOwnProperty(button)){
-		buttons[button].node.onclick = clickButton.bind(buttons[button], button);
+buttons.forEach(function(button){
+	button.node.onclick = function(){
+		resetButtons();
+		setActiveButton(this);
+		window.dispatchEvent(new CustomEvent('human color choice', {detail: button}));
+	}.bind(button);
+});
+
+window.addEventListener('computer turn finished', function(e){
+	console.log('computer turn finished');
+	//start the human timer
+	resetHumanChoiceInterval();
+});
+
+window.addEventListener('human turn finished', function(e){
+	console.log('human turn finished');
+	colorIndex = 0;
+	clearInterval(humanChoiceInterval);
+	computerTurn();
+});
+
+window.addEventListener('human color choice', function(e){
+	if(!hasLost){
+		var colorChoiceValue = e.detail.value;
+		if(colorChoiceValue === computerPattern[colorIndex]){
+			resetHumanChoiceInterval();
+			colorIndex++;
+
+			if(colorIndex === computerPattern.length){
+				score++;
+				window.dispatchEvent(new Event('human turn finished'));
+			}
+		}else{
+			clearInterval(humanChoiceInterval);
+			console.log('you lose! your score was: ' + score);
+			hasLost = true;
+		}
 	}
-}
+});
+
+function resetHumanChoiceInterval(){
+	clearInterval(humanChoiceInterval);
+	humanChoiceInterval = setTimeout(function(){
+		console.log('you lose! your score was: ' + score);
+		hasLost = true;
+	}, 3000);
+};
 
 function resetButtons(){
-	for(var button in buttons){
+	//removes the active class from all buttons
+	buttons.forEach(function(button){
 		if(buttons.hasOwnProperty(button)){
 			buttons[button].node.classList.remove('active');
 		}
-	}
+	});		
 }
 
 function setActiveButton(button){
-	setTimeout(function(){
+	var delayedActivate = setTimeout(function(){
 		button.node.classList.add('active');
 		button.sound.currentTime = 0;
 		button.sound.play();
 	}, 100);
+
+	var delayedDeactivate = setTimeout(function(){
+		button.node.classList.remove('active');
+	}, 500);
 }
 
-function clickButton(color){
-	resetButtons();
-	setActiveButton(this);
+function getRandomChoice(){
+	//returns random number from 0 - 4
+	return Math.floor(Math.random() * buttons.length);
 }
+
+function computerTurn(){
+	//clear human timer
+	clearInterval(humanChoiceInterval);
+
+	//play computer choices
+	computerPattern.push(getRandomChoice());
+	var i = 0;
+	var computerSequence = setInterval(function(){
+		if(i < computerPattern.length){
+			setActiveButton(buttons[computerPattern[i]]);
+			i++;
+		}else{
+			clearInterval(computerSequence);
+			window.dispatchEvent(new Event('computer turn finished'));
+			//emit an event saying that the computer's turn is finished
+		}
+	}, 700);
+}
+
