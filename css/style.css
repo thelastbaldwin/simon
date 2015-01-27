@@ -1,0 +1,68 @@
+*{
+	box-sizing: border-box;
+}
+
+/* http://stackoverflow.com/questions/826782/css-rule-to-disable-text-selection-highlighting*/
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#simon{
+	width: 75%;
+	margin: 0 auto;
+}
+
+#simon ul{
+	font-size: 0;
+	list-style: none;
+	padding: 0 10%;
+	margin: 0;
+}
+
+#simon li{
+	display: inline-block;
+	width: 50%;
+	height: 50%;
+	cursor: pointer;
+}
+
+#simon .yellow{
+	border-radius: 100% 0 0 0;
+	background-color: #EADB1A;
+}
+
+#simon .yellow.active{
+	background-color: #F5E948;
+}
+
+#simon .blue{
+	border-radius: 0 100% 0 0;
+	background-color: #20469D;
+}
+
+#simon .blue.active{
+	background-color: #3D5CA4;
+}
+
+#simon .red{
+	border-radius: 0 0 0 100%;
+	background-color: #E8191E;
+}
+
+#simon .red.active{
+	background-color: #F3484C;
+}
+
+#simon .green{
+	border-radius: 0 0 100% 0;
+	background-color: #1DBD15;
+}
+
+#simon .green.active{
+	background-color: #42C73B;
+}
