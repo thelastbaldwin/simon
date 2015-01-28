@@ -7,31 +7,42 @@ var humanChoiceInterval,
 			color: 'yellow',
 			value: 0,
 			node: document.querySelector('#simon .yellow'),
-			sound: document.querySelector('#yellowSound')
+			sound: "yellowSound"
 		},
 		{
 			color: 'blue',
 			value: 1,
 			node: document.querySelector('#simon .blue'),
-			sound: document.querySelector('#blueSound')
+			sound: "blueSound"
 		},
 		{
 			color: 'red',
 			value: 2,
 			node: document.querySelector('#simon .red'),
-			sound: document.querySelector('#redSound')
+			sound: "redSound"
 		},
 		{
 			color: 'green',
 			value: 3,
 			node: document.querySelector('#simon .green'),
-			sound: document.querySelector('#greenSound')
+			sound: "greenSound"
 		}
 	],
 	hasLost = false,
-	failSound = document.querySelector('#explodeSound'),
 	scoreElement = document.querySelector('#controls p span'),
 	startButton = document.querySelector('#controls button');
+
+//register sounds
+var audioPath = 'bin/';
+var sounds = [
+	{id: "yellowSound", src: "sound1.mp3"},
+	{id: "blueSound", src: "sound2.mp3"},
+	{id: "redSound", src: "sound3.mp3"},
+	{id: "greenSound", src: "sound4.mp3"},
+	{id: "explodeSound", src: "explode.mp3"}
+];
+
+createjs.Sound.registerSounds(sounds, audioPath);
 
 // attach handlers
 buttons.forEach(function(button){
@@ -84,9 +95,8 @@ function start(){
 
 function lose(){
 	clearInterval(humanChoiceInterval);
-	console.log('you lose! your score was: ' + score);
 	hasLost = true;
-	failSound.play();
+	createjs.Sound.play('explodeSound');
 }
 
 function updateScore(){
@@ -113,7 +123,7 @@ function setActiveButton(button){
 	var delayedActivate = setTimeout(function(){
 		button.node.classList.add('active');
 		button.sound.currentTime = 0;
-		button.sound.play();
+		createjs.Sound.play(button.sound);
 	}, 100);
 
 	var delayedDeactivate = setTimeout(function(){
