@@ -1,13 +1,19 @@
 <html>
 <head>
 	<title>Simon</title>
+	<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/style.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 	<div id="controls">
+		<div>
 		<p>Score: <span>0</span></p>
 		<button type="button">Start</button>
+		</div>
+		<div>
+			<a href="">Hide</a>
+		</div>
 	</div>
 	<div id="simon">
 		<ul class="noselect">
@@ -24,5 +30,6 @@
 	<audio src="bin/explode.mp3" id="explodeSound" preload="auto"></audio> -->
 	<script src="https://code.createjs.com/soundjs-0.6.0.min.js"></script>
 	<script src="js/simon.js"></script>
+	<script src="js/controls.js"></script>
 </body>
 </html>

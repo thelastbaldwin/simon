@@ -91,6 +91,7 @@ function start(){
 	hasLost = false;
 	updateScore();
 	computerTurn();
+	toggleControls();
 }
 
 function lose(){
