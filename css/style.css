@@ -1,6 +1,8 @@
 body, html{
 	font-family: 'Poiret One', cursive;
 	margin: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -30,18 +32,15 @@ body, html{
 
 #controls button{
 	font-size: 2.5vw;
-	/*display: inline-block;*/
-	transition: 1s ease;
-	border: 0 dotted #fff;
+	transition: 1s ease-out;
+	border: 0 solid #000;
 	background-color: #EADB1A;
-	width: 12vw;
+	width: 100%;
 }
 
 #controls button:hover, 
 #controls button:active{
-	border-left: 1vw solid;
-	border-right: 1vw solid;
-	background-color: #E8191E;
+	background-color: #1DBD15;
 }
 
 
@@ -73,6 +72,7 @@ body, html{
 	width: 50%;
 	height: 50%;
 	cursor: pointer;
+	transition: background-color 0.5s ease;
 }
 
 #simon .yellow{
